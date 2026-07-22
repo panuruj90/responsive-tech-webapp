@@ -11,6 +11,75 @@ const techFilters = [
   "TypeScript"
 ];
 
+const copy = {
+  en: {
+    eyebrow: "Responsive Tech Webapp",
+    heroTitle: "Webapp That Works Across Devices And Modern Tech Stacks",
+    heroLead:
+      "Built with responsive-first principles so the same product feels right on mobile, tablet, laptop, and desktop. Includes project previews, stack filters, and compatibility sections.",
+    viewProjects: "View Projects",
+    techCompatibility: "Tech Compatibility",
+    about: "About",
+    contact: "Contact",
+    language: "Language",
+    livePreview: "Live Preview",
+    openSourceRepo: "Open Source Repo",
+    backToProjects: "Back To Projects",
+    projectsTitle: "Project Repositories With Preview",
+    sourceRepo: "Source Repo",
+    aboutEyebrow: "About This Webapp",
+    aboutTitle: "Responsive Architecture For Every Device",
+    aboutBody:
+      "This project is designed as a reusable webapp shell that works across phones, tablets, laptops, and large desktop screens. The layout relies on flexible grids, robust breakpoints, and compact action grouping to keep navigation and content readable at any size.",
+    coverageEyebrow: "Tech Coverage",
+    coverageTitle: "Frontend, Backend, Data, And DevOps",
+    coverageBody:
+      "The project catalog includes React, Vue, Node, Python, SQL, Docker, and TypeScript-oriented samples so you can show stack breadth in one place while keeping each card focused and scan-friendly for recruiters.",
+    contactTitle: "Let's Build The Next Version",
+    contactBody:
+      "Looking for a responsive webapp, a dashboard with clean UX, or a full-stack delivery flow? Send a short message and project context.",
+    yourName: "Your name",
+    yourEmail: "Your email",
+    projectDetails: "Project details",
+    sendMessage: "Send Message",
+    sendSuccess: "Thanks, your message is ready to send.",
+    location: "Location"
+  },
+  th: {
+    eyebrow: "เว็บแอปสายเทคแบบ Responsive",
+    heroTitle: "เว็บแอปที่ใช้งานได้ดีทุกอุปกรณ์ และรองรับเทคสแต็กสมัยใหม่",
+    heroLead:
+      "ออกแบบด้วยแนวคิด responsive-first เพื่อให้ใช้งานได้ลื่นทั้งมือถือ แท็บเล็ต แล็ปท็อป และเดสก์ท็อป พร้อมส่วน preview โปรเจกต์ ระบบกรองเทค และโครงสร้างที่อ่านง่าย",
+    viewProjects: "ดูโปรเจกต์",
+    techCompatibility: "ความเข้ากันได้ของเทค",
+    about: "เกี่ยวกับ",
+    contact: "ติดต่อ",
+    language: "ภาษา",
+    livePreview: "พรีวิว",
+    openSourceRepo: "เปิดซอร์สโค้ด",
+    backToProjects: "กลับไปที่โปรเจกต์",
+    projectsTitle: "รายการโปรเจกต์พร้อม Preview",
+    sourceRepo: "Repo ต้นฉบับ",
+    aboutEyebrow: "เกี่ยวกับเว็บแอปนี้",
+    aboutTitle: "โครงสร้าง Responsive ที่รองรับทุกอุปกรณ์",
+    aboutBody:
+      "โปรเจกต์นี้ออกแบบเป็นโครงเว็บแอปที่นำไปใช้ต่อได้จริง ทั้งบนมือถือ แท็บเล็ต แล็ปท็อป และจอเดสก์ท็อป โดยเน้นกริดที่ยืดหยุ่น จุดตัดหน้าจอที่เหมาะสม และการจัดกลุ่มปุ่มให้ใช้งานง่าย",
+    coverageEyebrow: "ขอบเขตเทคโนโลยี",
+    coverageTitle: "รองรับ Frontend, Backend, Data และ DevOps",
+    coverageBody:
+      "แคตตาล็อกโปรเจกต์ครอบคลุม React, Vue, Node, Python, SQL, Docker และ TypeScript เพื่อแสดงความหลากหลายของสกิลในหน้าเดียว และยังอ่านง่ายสำหรับผู้รีวิว",
+    contactTitle: "มาสร้างเวอร์ชันถัดไปด้วยกัน",
+    contactBody:
+      "ถ้าต้องการเว็บแอป responsive, dashboard ที่ UX ชัดเจน หรือระบบ full-stack ครบวงจร ส่งรายละเอียดโปรเจกต์เข้ามาได้เลย",
+    yourName: "ชื่อของคุณ",
+    yourEmail: "อีเมลของคุณ",
+    projectDetails: "รายละเอียดโปรเจกต์",
+    sendMessage: "ส่งข้อความ",
+    sendSuccess: "ขอบคุณครับ ข้อความของคุณพร้อมส่งแล้ว",
+    location: "ที่อยู่"
+  }
+};
+
 const projects = [
   {
     id: 1,
@@ -107,6 +176,18 @@ const projects = [
     previewTone: "tone-rose",
     source: "https://github.com/panuruj90/Portfolio",
     live: "#preview/realtime-metrics-wall"
+  },
+  {
+    id: 9,
+    slug: "portfolio-repository",
+    name: "Portfolio Repository",
+    summary: "Main portfolio monorepo containing frontend, backoffice, backend API, and analytics service.",
+    previewSummary:
+      "A complete repository preview showing how UI apps and backend services connect in one full-stack workflow.",
+    tags: ["React", "Vue", "Node", "Python", "SQL"],
+    previewTone: "tone-amber",
+    source: "https://github.com/panuruj90/Portfolio",
+    live: "#preview/portfolio-repository"
   }
 ];
 
@@ -119,9 +200,11 @@ const compatibility = [
 
 export default function App() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const [language, setLanguage] = useState("en");
   const [contactState, setContactState] = useState({ name: "", email: "", message: "" });
   const [contactStatus, setContactStatus] = useState("idle");
   const [hash, setHash] = useState(() => (typeof window !== "undefined" ? window.location.hash : ""));
+  const labels = copy[language];
 
   useEffect(() => {
     function onHashChange() {
@@ -162,24 +245,39 @@ export default function App() {
   return (
     <div className="page">
       <header className="hero">
-        <p className="eyebrow">Responsive Tech Webapp</p>
-        <h1>Webapp That Works Across Devices And Modern Tech Stacks</h1>
-        <p className="lead">
-          Built with responsive-first principles so the same product feels right on mobile, tablet, laptop, and
-          desktop. Includes project previews, stack filters, and compatibility sections.
-        </p>
+        <div className="hero-topbar">
+          <p className="eyebrow">{labels.eyebrow}</p>
+          <div className="language-switcher" aria-label={labels.language}>
+            <button
+              type="button"
+              className={`language-button${language === "en" ? " is-active" : ""}`}
+              onClick={() => setLanguage("en")}
+            >
+              EN
+            </button>
+            <button
+              type="button"
+              className={`language-button${language === "th" ? " is-active" : ""}`}
+              onClick={() => setLanguage("th")}
+            >
+              TH
+            </button>
+          </div>
+        </div>
+        <h1>{labels.heroTitle}</h1>
+        <p className="lead">{labels.heroLead}</p>
         <div className="hero-actions">
-          <a href="#projects" className="btn primary">View Projects</a>
-          <a href="#compatibility" className="btn ghost">Tech Compatibility</a>
-          <a href="#about" className="btn ghost">About</a>
-          <a href="#contact" className="btn ghost">Contact</a>
+          <a href="#projects" className="btn primary">{labels.viewProjects}</a>
+          <a href="#compatibility" className="btn ghost">{labels.techCompatibility}</a>
+          <a href="#about" className="btn ghost">{labels.about}</a>
+          <a href="#contact" className="btn ghost">{labels.contact}</a>
         </div>
       </header>
 
       {activePreviewProject && (
         <section id="preview" className="preview-panel">
           <div className={`preview-banner ${activePreviewProject.previewTone}`}>
-            <p className="preview-kicker">Live Preview</p>
+            <p className="preview-kicker">{labels.livePreview}</p>
             <h2>{activePreviewProject.name}</h2>
           </div>
           <div className="preview-content">
@@ -190,8 +288,8 @@ export default function App() {
               ))}
             </ul>
             <div className="card-actions">
-              <a href={activePreviewProject.source} target="_blank" rel="noreferrer">Open Source Repo</a>
-              <a href="#projects">Back To Projects</a>
+              <a href={activePreviewProject.source} target="_blank" rel="noreferrer">{labels.openSourceRepo}</a>
+              <a href="#projects">{labels.backToProjects}</a>
             </div>
           </div>
         </section>
@@ -212,7 +310,7 @@ export default function App() {
 
       <section id="projects" className="projects-section">
         <div className="section-top">
-          <h2>Project Repositories With Preview</h2>
+          <h2>{labels.projectsTitle}</h2>
           <div className="filter-row">
             {techFilters.map((filter) => (
               <button
@@ -242,8 +340,8 @@ export default function App() {
                   ))}
                 </ul>
                 <div className="card-actions">
-                  <a href={project.source} target="_blank" rel="noreferrer">Source Repo</a>
-                  <a href={project.live}>Live Preview</a>
+                  <a href={project.source} target="_blank" rel="noreferrer">{labels.sourceRepo}</a>
+                  <a href={project.live}>{labels.livePreview}</a>
                 </div>
               </div>
             </article>
@@ -253,61 +351,51 @@ export default function App() {
 
       <section id="about" className="about-section">
         <article className="about-card">
-          <p className="eyebrow">About This Webapp</p>
-          <h2>Responsive Architecture For Every Device</h2>
-          <p>
-            This project is designed as a reusable webapp shell that works across phones, tablets, laptops, and large
-            desktop screens. The layout relies on flexible grids, robust breakpoints, and compact action grouping to
-            keep navigation and content readable at any size.
-          </p>
+          <p className="eyebrow">{labels.aboutEyebrow}</p>
+          <h2>{labels.aboutTitle}</h2>
+          <p>{labels.aboutBody}</p>
         </article>
         <article className="about-card">
-          <p className="eyebrow">Tech Coverage</p>
-          <h2>Frontend, Backend, Data, And DevOps</h2>
-          <p>
-            The project catalog includes React, Vue, Node, Python, SQL, Docker, and TypeScript-oriented samples so
-            you can show stack breadth in one place while keeping each card focused and scan-friendly for recruiters.
-          </p>
+          <p className="eyebrow">{labels.coverageEyebrow}</p>
+          <h2>{labels.coverageTitle}</h2>
+          <p>{labels.coverageBody}</p>
         </article>
       </section>
 
       <section id="contact" className="contact-section">
         <div className="contact-info">
-          <p className="eyebrow">Contact</p>
-          <h2>Let&apos;s Build The Next Version</h2>
-          <p>
-            Looking for a responsive webapp, a dashboard with clean UX, or a full-stack delivery flow? Send a short
-            message and project context.
-          </p>
+          <p className="eyebrow">{labels.contact}</p>
+          <h2>{labels.contactTitle}</h2>
+          <p>{labels.contactBody}</p>
           <ul>
             <li>Email: panuruj905@gmail.com</li>
             <li>GitHub: github.com/panuruj90</li>
-            <li>Location: Samut Prakan, Thailand</li>
+            <li>{labels.location}: Samut Prakan, Thailand</li>
           </ul>
         </div>
         <form className="contact-form" onSubmit={handleContactSubmit}>
           <input
             type="text"
-            placeholder="Your name"
+            placeholder={labels.yourName}
             value={contactState.name}
             onChange={(event) => setContactState({ ...contactState, name: event.target.value })}
             required
           />
           <input
             type="email"
-            placeholder="Your email"
+            placeholder={labels.yourEmail}
             value={contactState.email}
             onChange={(event) => setContactState({ ...contactState, email: event.target.value })}
             required
           />
           <textarea
-            placeholder="Project details"
+            placeholder={labels.projectDetails}
             value={contactState.message}
             onChange={(event) => setContactState({ ...contactState, message: event.target.value })}
             required
           />
-          <button className="btn primary" type="submit">Send Message</button>
-          {contactStatus === "sent" && <p className="form-success">Thanks, your message is ready to send.</p>}
+          <button className="btn primary" type="submit">{labels.sendMessage}</button>
+          {contactStatus === "sent" && <p className="form-success">{labels.sendSuccess}</p>}
         </form>
       </section>
     </div>
