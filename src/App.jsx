@@ -1,15 +1,39 @@
 import { useEffect, useMemo, useState } from "react";
 
-const techFilters = [
-  "All",
-  "React",
-  "Vue",
-  "Node",
-  "Python",
-  "SQL",
-  "Docker",
-  "TypeScript"
+const filterOptions = [
+  { key: "All", en: "All", th: "ทั้งหมด" },
+  { key: "React", en: "React", th: "React" },
+  { key: "Vue", en: "Vue", th: "Vue" },
+  { key: "Node", en: "Node", th: "Node" },
+  { key: "Python", en: "Python", th: "Python" },
+  { key: "SQL", en: "SQL", th: "SQL" },
+  { key: "Docker", en: "Docker", th: "Docker" },
+  { key: "TypeScript", en: "TypeScript", th: "TypeScript" }
 ];
+
+const tagText = {
+  React: { en: "React", th: "React" },
+  Vue: { en: "Vue", th: "Vue" },
+  Node: { en: "Node", th: "Node" },
+  Python: { en: "Python", th: "Python" },
+  SQL: { en: "SQL", th: "SQL" },
+  Docker: { en: "Docker", th: "Docker" },
+  TypeScript: { en: "TypeScript", th: "TypeScript" },
+  Accessibility: { en: "Accessibility", th: "การเข้าถึง" },
+  "Responsive CSS": { en: "Responsive CSS", th: "Responsive CSS" },
+  Auth: { en: "Auth", th: "ยืนยันตัวตน" },
+  Validation: { en: "Validation", th: "ตรวจสอบข้อมูล" },
+  "Service Layer": { en: "Service Layer", th: "ชั้นบริการ" },
+  SQLite: { en: "SQLite", th: "SQLite" },
+  "Schema Control": { en: "Schema Control", th: "จัดการ Schema" },
+  "Seed Sync": { en: "Seed Sync", th: "ซิงก์ Seed" },
+  "Migration Ready": { en: "Migration Ready", th: "พร้อมทำ Migration" },
+  Data: { en: "Data", th: "ข้อมูล" },
+  "Docker Ready": { en: "Docker Ready", th: "พร้อม Docker" },
+  "Build Scripts": { en: "Build Scripts", th: "สคริปต์ Build" },
+  "Env Config": { en: "Env Config", th: "ตั้งค่า Environment" },
+  "Preview Mode": { en: "Preview Mode", th: "โหมดพรีวิว" }
+};
 
 const copy = {
   en: {
@@ -23,6 +47,8 @@ const copy = {
     contact: "Contact",
     language: "Language",
     livePreview: "Live Preview",
+    quickPreview: "Quick Preview",
+    liveDemo: "Live Demo",
     openSourceRepo: "Open Source Repo",
     backToProjects: "Back To Projects",
     projectsTitle: "Project Repositories With Preview",
@@ -56,6 +82,8 @@ const copy = {
     contact: "ติดต่อ",
     language: "ภาษา",
     livePreview: "พรีวิว",
+    quickPreview: "พรีวิวด่วน",
+    liveDemo: "เดโมจริง",
     openSourceRepo: "เปิดซอร์สโค้ด",
     backToProjects: "กลับไปที่โปรเจกต์",
     projectsTitle: "รายการโปรเจกต์พร้อม Preview",
@@ -91,6 +119,7 @@ const projects = [
     tags: ["Vue", "Node", "SQL"],
     previewTone: "tone-blue",
     source: "https://github.com/panuruj90/Portfolio/tree/main/apps/backoffice-vue",
+    liveDemo: "https://stackblitz.com/github/panuruj90/Portfolio/tree/main/apps/backoffice-vue",
     live: "#preview/hiring-dashboard-pro"
   },
   {
@@ -103,6 +132,7 @@ const projects = [
     tags: ["React", "TypeScript"],
     previewTone: "tone-cyan",
     source: "https://github.com/panuruj90/Portfolio/tree/main/apps/frontend-react",
+    liveDemo: "https://stackblitz.com/github/panuruj90/Portfolio/tree/main/apps/frontend-react",
     live: "#preview/portfolio-frontend-x"
   },
   {
@@ -115,6 +145,7 @@ const projects = [
     tags: ["Python", "SQL"],
     previewTone: "tone-orange",
     source: "https://github.com/panuruj90/Portfolio/tree/main/services/analytics-python",
+    liveDemo: "https://stackblitz.com/github/panuruj90/Portfolio/tree/main/services/analytics-python",
     live: "#preview/insights-engine"
   },
   {
@@ -127,6 +158,7 @@ const projects = [
     tags: ["Node", "Docker"],
     previewTone: "tone-indigo",
     source: "https://github.com/panuruj90/Portfolio/tree/main/services/backend-node",
+    liveDemo: "https://stackblitz.com/github/panuruj90/Portfolio/tree/main/services/backend-node",
     live: "#preview/api-core-suite"
   },
   {
@@ -139,6 +171,7 @@ const projects = [
     tags: ["SQL", "Docker"],
     previewTone: "tone-violet",
     source: "https://github.com/panuruj90/Portfolio/tree/main/data",
+    liveDemo: "https://stackblitz.com/github/panuruj90/Portfolio/tree/main/data",
     live: "#preview/data-bootstrap-kit"
   },
   {
@@ -151,6 +184,7 @@ const projects = [
     tags: ["React", "Vue", "TypeScript"],
     previewTone: "tone-green",
     source: "https://github.com/panuruj90/Portfolio",
+    liveDemo: "https://stackblitz.com/github/panuruj90/responsive-tech-webapp",
     live: "#preview/cross-device-ui-lab"
   },
   {
@@ -163,6 +197,7 @@ const projects = [
     tags: ["Node", "Python"],
     previewTone: "tone-slate",
     source: "https://github.com/panuruj90/Portfolio",
+    liveDemo: "https://stackblitz.com/github/panuruj90/Portfolio",
     live: "#preview/automation-bot-panel"
   },
   {
@@ -175,6 +210,7 @@ const projects = [
     tags: ["React", "Node", "SQL"],
     previewTone: "tone-rose",
     source: "https://github.com/panuruj90/Portfolio",
+    liveDemo: "https://stackblitz.com/github/panuruj90/Portfolio",
     live: "#preview/realtime-metrics-wall"
   },
   {
@@ -187,15 +223,28 @@ const projects = [
     tags: ["React", "Vue", "Node", "Python", "SQL"],
     previewTone: "tone-amber",
     source: "https://github.com/panuruj90/Portfolio",
+    liveDemo: "https://stackblitz.com/github/panuruj90/Portfolio",
     live: "#preview/portfolio-repository"
   }
 ];
 
 const compatibility = [
-  { tech: "Frontend", items: ["React", "Vue", "Responsive CSS", "Accessibility"] },
-  { tech: "Backend", items: ["Node API", "Auth", "Validation", "Service Layer"] },
-  { tech: "Data", items: ["SQLite", "Schema Control", "Seed Sync", "Migration Ready"] },
-  { tech: "DevOps", items: ["Docker Ready", "Build Scripts", "Env Config", "Preview Mode"] }
+  {
+    tech: { en: "Frontend", th: "ฝั่งหน้าเว็บ" },
+    items: ["React", "Vue", "Responsive CSS", "Accessibility"]
+  },
+  {
+    tech: { en: "Backend", th: "ฝั่งระบบหลังบ้าน" },
+    items: ["Node API", "Auth", "Validation", "Service Layer"]
+  },
+  {
+    tech: { en: "Data", th: "ฝั่งข้อมูล" },
+    items: ["SQLite", "Schema Control", "Seed Sync", "Migration Ready"]
+  },
+  {
+    tech: { en: "DevOps", th: "ฝั่งดีพลอยและระบบ" },
+    items: ["Docker Ready", "Build Scripts", "Env Config", "Preview Mode"]
+  }
 ];
 
 export default function App() {
@@ -219,6 +268,14 @@ export default function App() {
   }, []);
 
   const previewSlug = hash.startsWith("#preview/") ? hash.replace("#preview/", "") : "";
+
+  function tItem(value) {
+    if (!tagText[value]) {
+      return value;
+    }
+
+    return tagText[value][language] || value;
+  }
 
   const activePreviewProject = useMemo(() => {
     if (!previewSlug) {
@@ -284,11 +341,12 @@ export default function App() {
             <p>{activePreviewProject.previewSummary}</p>
             <ul className="tag-row">
               {activePreviewProject.tags.map((tag) => (
-                <li key={tag}>{tag}</li>
+                <li key={tag}>{tItem(tag)}</li>
               ))}
             </ul>
             <div className="card-actions">
               <a href={activePreviewProject.source} target="_blank" rel="noreferrer">{labels.openSourceRepo}</a>
+              <a href={activePreviewProject.liveDemo} target="_blank" rel="noreferrer">{labels.liveDemo}</a>
               <a href="#projects">{labels.backToProjects}</a>
             </div>
           </div>
@@ -297,11 +355,11 @@ export default function App() {
 
       <section id="compatibility" className="compatibility-grid">
         {compatibility.map((block) => (
-          <article className="compat-card" key={block.tech}>
-            <h2>{block.tech}</h2>
+          <article className="compat-card" key={block.tech.en}>
+            <h2>{block.tech[language]}</h2>
             <ul>
               {block.items.map((item) => (
-                <li key={item}>{item}</li>
+                <li key={item}>{tItem(item)}</li>
               ))}
             </ul>
           </article>
@@ -312,14 +370,14 @@ export default function App() {
         <div className="section-top">
           <h2>{labels.projectsTitle}</h2>
           <div className="filter-row">
-            {techFilters.map((filter) => (
+            {filterOptions.map((filter) => (
               <button
-                key={filter}
+                key={filter.key}
                 type="button"
-                className={`chip${activeFilter === filter ? " is-active" : ""}`}
-                onClick={() => setActiveFilter(filter)}
+                className={`chip${activeFilter === filter.key ? " is-active" : ""}`}
+                onClick={() => setActiveFilter(filter.key)}
               >
-                {filter}
+                {filter[language]}
               </button>
             ))}
           </div>
@@ -336,12 +394,13 @@ export default function App() {
                 <p>{project.summary}</p>
                 <ul className="tag-row">
                   {project.tags.map((tag) => (
-                    <li key={tag}>{tag}</li>
+                    <li key={tag}>{tItem(tag)}</li>
                   ))}
                 </ul>
                 <div className="card-actions">
                   <a href={project.source} target="_blank" rel="noreferrer">{labels.sourceRepo}</a>
-                  <a href={project.live}>{labels.livePreview}</a>
+                  <a href={project.liveDemo} target="_blank" rel="noreferrer">{labels.liveDemo}</a>
+                  <a href={project.live}>{labels.quickPreview}</a>
                 </div>
               </div>
             </article>
